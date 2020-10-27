@@ -1,19 +1,6 @@
-/******************************************
-Treehouse FSJS Techdegree:
-project 1 - A Random Quote Generator
-******************************************/
-
-// For assistance:
-// Check the "Project Resources" section of the project instructions
-// Reach out in your Slack community - https://treehouse-fsjs-102.slack.com/app_redirect?channel=chit-chat
-
-/***
- * `quotes` array
- ***/
-const quotes = [
-	{
-		quote:
-			"The most damaging phrase in the language is.. it's always been done this way.",
+// Array of quotes to loop through
+const quotes = [{
+		quote: "The most damaging phrase in the language is.. it's always been done this way.",
 		source: "Grace Hopper",
 		citation: "The Wit and Wisdom of Grace Hopper",
 		year: 1987,
@@ -32,86 +19,65 @@ const quotes = [
 		tags: ["coding", "wisdom", "humor"],
 	},
 	{
-		quote:
-			"Sometimes it's better to leave something alone, to pause, and that's very true of programming.",
+		quote: "Sometimes it's better to leave something alone, to pause, and that's very true of programming.",
 		source: "Joyce Wheeler",
+		easterEgg: "&#x1f430;"
 	},
 	{
-		quote:
-			"Programming isn't about what you know; it's about what you can figure out.",
+		quote: "Programming isn't about what you know; it's about what you can figure out.",
 		source: "Chris Pine",
 		citation: "Learn to Program",
 	},
 ];
 
-/***
- * `getRandomQuote` function
- ***/
-const getRandomQuote = (quotesArray) =>
-	quotesArray[Math.floor(Math.random() * quotesArray.length)];
+// Returns a random object of the quotes array using a random index of the quotes array
+const getRandomQuote = quotesArray => quotesArray[Math.floor(Math.random() * quotesArray.length)];
 
-/***
- * `getRandomRgbValue` function
- ***/
-const getRandomRgbValue = () => Math.floor(Math.random() * 255);
+// Returns a random number from 0 to 255 (possible rgb numbers)
+const getRandomRgbValue = () => Math.floor(Math.random() * 256);
 
-/***
- * `setRandomBackgroundColor` function
- ***/
-const setRandomBackgroundColor = () => {
-	const randomRgbColor = `rgb(${getRandomRgbValue()}, ${getRandomRgbValue()}, ${getRandomRgbValue()})`;
+// Returns a random string with a rgb value
+const setRandomBackgroundColor = () => `rgb(${getRandomRgbValue()}, ${getRandomRgbValue()}, ${getRandomRgbValue()})`;
 
-	document.getElementsByTagName(
-		"body"
-	)[0].style.backgroundColor = randomRgbColor;
-};
-
-/***
- * `printQuote` function
- ***/
+// Prints a random quote within the quote-box and sets the body to a random colored background
 const printQuote = () => {
 	let randomQuote = getRandomQuote(quotes);
-	let quoteBox = `
-        <p class="quote">${randomQuote.quote}</p>
-        <p class="source">${randomQuote.source}
-    `;
+	let quoteStr =
+		`<p class="quote">${randomQuote.quote}</p>
+        <p class="source">${randomQuote.source}`;
 
 	if (randomQuote.citation) {
-		quoteBox += `<span class="citation">${randomQuote.citation}</span>`;
+		quoteStr += `<span class="citation">${randomQuote.citation}</span>`;
 	}
 
 	if (randomQuote.year) {
-		quoteBox += `<span class="year">${randomQuote.year}</span>`;
+		quoteStr += `<span class="year">${randomQuote.year}</span>`;
 	}
 
-	quoteBox += "</p>";
+	if (randomQuote.easterEgg) {
+		quoteStr += `<span>${randomQuote.easterEgg}</span>`
+	}
+
+	quoteStr += "</p>";
 
 	if (randomQuote.tags) {
-		quoteBox += "<ul class='tags'>";
+		quoteStr += "<ul class='tags'>";
 
 		for (const tag of randomQuote.tags) {
-			quoteBox += `<li class="tag">${tag}</li>`;
+			quoteStr += `<li class="tag">${tag}</li>`;
 		}
 
-		quoteBox += "</ul>";
+		quoteStr += "</ul>";
 	}
 
-	document.getElementById("quote-box").innerHTML = quoteBox;
-	setRandomBackgroundColor();
+	document.getElementById("quote-box").innerHTML = quoteStr;
+	document.getElementsByTagName("body")[0].style.backgroundColor = setRandomBackgroundColor();
 };
 
-/***
- * `setQuoteAtInterval`
- ***/
+// Calling the printQuote() function every 10 seconds
 setInterval(() => {
 	printQuote();
 }, 10000);
 
-/***
- * click event listener for the print quote button
- * DO NOT CHANGE THE CODE BELOW!!
- ***/
-
-document
-	.getElementById("load-quote")
-	.addEventListener("click", printQuote, false);
+// Listening for click events on the load-quote button
+document.getElementById("load-quote").addEventListener("click", printQuote, false);
